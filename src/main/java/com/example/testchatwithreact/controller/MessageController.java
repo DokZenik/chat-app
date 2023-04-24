@@ -23,10 +23,10 @@ public class MessageController {
     public ResponseEntity<Void> receivePublicMessages(@Payload MessageDTO message){
         if(message.getStatus().name().equals("JOIN"))
             storageService.addUser(message.getSenderName());
-        else {
-            simpMessagingTemplate.convertAndSend("/chatroom/" + message.getRecipientName(), message);
-        }
+        System.out.println("/chatroom/" + message.getRecipientName());
+        simpMessagingTemplate.convertAndSend("/chatroom/" + message.getRecipientName(), message);
 //        System.out.println(storageService.getAll());
+        System.out.println("ResName: " + message.getRecipientName() + "\t from: " + message.getSenderName());
         return ResponseEntity.ok().build();
     }
 }
