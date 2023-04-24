@@ -2,6 +2,7 @@ package com.example.testchatwithreact.controller;
 
 import com.example.testchatwithreact.model.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -15,8 +16,8 @@ public class MessageController {
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/message")
-    @SendTo("/chatroom/public")
-    public MessageDTO receivePublicMessages(@Payload MessageDTO message){
-        return message;
+    public ResponseEntity<Void> receivePublicMessages(@Payload MessageDTO message){
+        simpMessagingTemplate.convertAndSend("/chatroom/" + message.getRecipientName(), message);
+        return ResponseEntity.ok().build();
     }
 }
